@@ -1,0 +1,52 @@
+<div id="mint-countdown" style="display:flex;justify-content:center;gap:10px;">
+  <div class="digit"></div>
+  <div class="digit"></div>
+  <div class="colon"></div>
+  <div class="digit"></div>
+  <div class="digit"></div>
+  <div class="colon"></div>
+  <div class="digit"></div>
+  <div class="digit"></div>
+</div>
+
+<script>
+  // === CONFIG ===
+  const targetDate = new Date("2025-12-01T18:00:00Z"); // 🕒 your mint date
+  const iconPath = "https://yourdomain.com/assets/icons/"; // change to your path
+  const iconMap = {
+    "0": "0.webp",
+    "1": "1.webp",
+    "2": "2.webp",
+    "3": "3.webp",
+    "4": "4.webp",
+    "5": "5.webp",
+    "6": "6.webp",
+    "7": "7.webp",
+    "8": "8.webp",
+    "9": "9.webp",
+    ":": "colon.webp"
+  };
+
+  const countdownEl = document.getElementById("mint-countdown");
+  const digits = countdownEl.querySelectorAll(".digit, .colon");
+
+  function updateCountdown() {
+    const now = new Date();
+    const diff = Math.max(0, targetDate - now);
+    const hours = String(Math.floor(diff / 3600000) % 24).padStart(2, "0");
+    const minutes = String(Math.floor(diff / 60000) % 60).padStart(2, "0");
+    const seconds = String(Math.floor(diff / 1000) % 60).padStart(2, "0");
+    const display = `${hours}:${minutes}:${seconds}`;
+    
+    display.split("").forEach((char, i) => {
+      const el = digits[i];
+      if (!el) return;
+      el.innerHTML = `<img src="${iconPath + iconMap[char]}" alt="${char}" style="width:50px;height:auto;">`;
+    });
+
+    if (diff <= 0) clearInterval(timer);
+  }
+
+  updateCountdown();
+  const timer = setInterval(updateCountdown, 1000);
+</script>
